@@ -15,7 +15,7 @@
 *****************************************************************************************
 '''
 
-# Team ID:			[ Team-ID ]
+# Team ID:			[ PB_1118]
 # Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
 # Filename:			task_1b.py
 # Functions:		detect_Qr_details, detect_ArUco_details
@@ -27,6 +27,7 @@
 ## You have to implement this task with the five available  ##
 ## modules for this task                                    ##
 ##############################################################
+
 import numpy as np
 import cv2
 from cv2 import aruco
@@ -67,7 +68,13 @@ def detect_Qr_details(image):
     Qr_codes_details = {}
 
     ##############	ADD YOUR CODE HERE	##############
-    
+    Qr_codes_details = {}
+    Qr_codes = pyzbar.decode(img)
+    for Qr_code in Qr_codes:
+        (x, y, w, h) = Qr_code.rect
+        # cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        Qr_codes_details[Qr_code.data.decode('utf-8')] = [x + w / 2, y + h / 2]
+        
     ##################################################
     
     return Qr_codes_details    

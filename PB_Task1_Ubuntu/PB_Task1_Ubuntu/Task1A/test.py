@@ -64,7 +64,7 @@ def segmented_intersections(lines):
 
     return intersections
 
-img = cv2.imread('/home/navneeth/EgoPro/eyantra/gitrepo/eyantra-2022/PB_Task1_Ubuntu/PB_Task1_Ubuntu/Task1A/public_test_images/maze_2.png')
+img = cv2.imread('public_test_images/maze_2.png')
 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -76,7 +76,7 @@ lines = cv2.HoughLines(edges, 1, np.pi/180, 200)
 seg = segment_by_angle_kmeans(lines)
 
 intersections = segmented_intersections(seg)
-print(len(intersections))
+print(intersections)
 
 for i in range(len(seg)):
 	for r_theta in seg[i]:
