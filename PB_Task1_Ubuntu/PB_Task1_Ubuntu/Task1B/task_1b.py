@@ -73,7 +73,9 @@ def detect_Qr_details(image):
     for Qr_code in Qr_codes:
         (x, y, w, h) = Qr_code.rect
         # cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        Qr_codes_details[Qr_code.data.decode('utf-8')] = [x + w / 2, y + h / 2]
+        center_x = math.floor(math.floor(x) + math.floor(w) / 2)
+        center_y = math.floor(math.floor(y) + math.floor(h) / 2)
+        Qr_codes_details[Qr_code.data.decode('utf-8')] = [center_x, center_y]
         
     ##################################################
     
