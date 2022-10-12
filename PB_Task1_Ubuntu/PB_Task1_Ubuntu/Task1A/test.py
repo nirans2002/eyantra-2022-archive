@@ -94,6 +94,10 @@ for i in range(len(seg)):
 		cv2.line(img, (x1, y1), (x2, y2), colour(i), 2)
 i=0
 intersections.sort
+def x_coordinate(ele):
+    return ele[0]
+
+intersections = sorted(intersections,key=x_coordinate)
 for point in intersections[80:80+29]:
 	x,y=point[0]
 	img = cv2.circle(img, (x,y), 3, (255,0,0), 3)
