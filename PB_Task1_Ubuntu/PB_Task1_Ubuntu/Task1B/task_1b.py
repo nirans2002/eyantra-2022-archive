@@ -109,14 +109,45 @@ def detect_ArUco_details(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_5X5_250)
     parameters = aruco.DetectorParameters_create()
-    corners, ids, _ = aruco.detectMarkers(
+    (corners, ids,rejected) =  aruco.detectMarkers(
         gray, aruco_dict, parameters=parameters)
 
-    print(ids)
-    for x, y in zip(ids, corners):
-        for z, a in zip(x, y):
-            ArUco_details_dict[z] = a
-            print(ArUco_details_dict)
+    ids = ids.flatten()
+    # print(ids)
+
+    for (corner,id) in zip(corners,ids):
+        corners = corner.reshape((4,2))
+        (topLeft,topRight,bottomRight,bottomLeft) = corners
+
+        topRight = (int(topRight[0]),int(topRight[1]))
+        topLeft = (int(topLeft[0]),int(topLeft[1]))
+        bottomRight = (int(bottomRight[0]),int(bottomRight[1]))
+        bottomLeft = (int(bottomLeft[0]),int(bottomLeft[1]))
+
+        cornerCords = [topLeft,topRight,bottomLeft,bottomRight]
+
+
+        center_x = int((topLeft[0]+ bottomRight[0])/2)
+        center_y = int((topLeft[1]+ bottomRight[1])/2)
+
+        centerCords = [center_x,center_y]
+
+        # angle
+		
+        angle = (math.atan2(((topRight[0])-(topLeft[0])),((topRight[1]-topLeft[1]))))
+		# print((round(math.degrees(angle)))%360)
+        if angle<0:
+            angle = (round(math.degrees(angle)))+360
+        else:
+            angle = round(math.degrees(angle))
+
+
+
+        data = [centerCords,angle,cornerCords]
+
+        ArUco_details_dict[id] = data
+        ArUco_corners[id] = cornerCords       
+
 
     ##################################################
 
