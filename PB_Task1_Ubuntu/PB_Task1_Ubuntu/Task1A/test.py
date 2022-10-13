@@ -4,11 +4,7 @@ from collections import defaultdict
 
 
 def segment_by_angle_kmeans(lines, k=2, **kwargs):
-    """Groups lines based on angle with k-means.
 
-    Uses k-means on the coordinates of the angle on the unit circle 
-    to segment `k` angles inside `lines`.
-    """
     default_criteria_type = cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER
     criteria = kwargs.get('criteria', (default_criteria_type, 10, 1.0))
     flags = kwargs.get('flags', cv2.KMEANS_RANDOM_CENTERS)
@@ -25,6 +21,7 @@ def segment_by_angle_kmeans(lines, k=2, **kwargs):
     for i, line in enumerate(lines):
         segmented[labels[i]].append(line)
     segmented = list(segmented.values())
+
     return segmented
 
 
@@ -35,11 +32,7 @@ def colour(i):
 		return (0,255,0)
 
 def intersection(line1, line2):
-    """Finds the intersection of two lines given in Hesse normal form.
 
-    Returns closest integer pixel locations.
-    See https://stackoverflow.com/a/383527/5087436
-    """
     rho1, theta1 = line1[0]
     rho2, theta2 = line2[0]
     A = np.array([
@@ -53,7 +46,6 @@ def intersection(line1, line2):
 
 
 def segmented_intersections(lines):
-    """Finds the intersections between groups of lines."""
 
     intersections = []
     for i, group in enumerate(lines[:-1]):
@@ -64,7 +56,7 @@ def segmented_intersections(lines):
 
     return intersections
 
-img = cv2.imread('public_test_images/maze_2.png')
+img = cv2.imread('/home/navneeth/EgoPro/eyantra/gitrepo/eyantra-2022/PB_Task1_Ubuntu/PB_Task1_Ubuntu/Task1A/public_test_images/maze_1.png')
 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -76,7 +68,7 @@ lines = cv2.HoughLines(edges, 1, np.pi/180, 200)
 seg = segment_by_angle_kmeans(lines)
 
 intersections = segmented_intersections(seg)
-print(intersections)
+
 
 for i in range(len(seg)):
 	for r_theta in seg[i]:
@@ -98,9 +90,219 @@ def x_coordinate(ele):
     return ele[0]
 
 intersections = sorted(intersections,key=x_coordinate)
-for point in intersections[80:80+29]:
-	x,y=point[0]
-	img = cv2.circle(img, (x,y), 3, (255,0,0), 3)
-	i+=1
+
+
+def sort_coordinates_with_letter(intersections):
+    a=intersections[:28]
+    b=intersections[28:56]
+    c=intersections[56:84]
+    d=intersections[84:112]
+    e=intersections[112:140]
+    f=intersections[140:168]
+    g=intersections[168:196]
+
+
+    A=[[] for i in range(7)]
+    B=[[] for i in range(7)]
+    C=[[] for i in range(7)]
+    D=[[] for i in range(7)]
+    E=[[] for i in range(7)]
+    F=[[] for i in range(7)]
+    G=[[] for i in range(7)]
+
+    for i in range(0,len(a)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        A[index].append(point)
+
+        n_i = i+14
+        point = a[n_i][0]        
+        A[index].append(point)
+
+        n_i = i+15
+        point = a[n_i][0] 
+        A[index].append(point)
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        A[index].append(point)
+
+
+
+    for i in range(0,len(b)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        B[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        B[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        B[index].append(point)
+
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        B[index].append(point)
+
+
+
+    for i in range(0,len(c)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        C[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        C[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        C[index].append(point)
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        C[index].append(point)
+
+
+
+    for i in range(0,len(d)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        D[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        D[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        D[index].append(point)
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        D[index].append(point)
+
+
+
+    for i in range(0,len(e)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        E[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        E[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        E[index].append(point)
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        E[index].append(point)
+
+
+
+    for i in range(0,len(f)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        F[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        F[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        F[index].append(point)
+
+
+
+        n_i = i+1
+        point = a[n_i][0] 
+        F[index].append(point)
+
+ 
+
+    for i in range(0,len(g)//2-1,2):
+        index = i//2
+        point = a[i][0]
+        G[index].append(point)
+
+
+        n_i = i+14
+        point = a[n_i][0]        
+        G[index].append(point)
+
+        
+        n_i = i+15
+        point = a[n_i][0] 
+        G[index].append(point)
+
+ 
+
+        n_i = i+1
+        point = a[n_i][0] 
+        G[index].append(point)
+
+
+
+
+    return A,B,C,D,E,F,G
+
+def crop_image(img,y1,y2,x1,x2):
+    img=np.array(img[y1:y2,x1:x2,:])
+    return img
+
+
+def detect_signals(img,stream):
+    result=[]
+    color={'green':1,'blue':0,'red':0}
+
+    
+    for i in range(len(stream)):
+        max_count=0
+        x1,y1 = stream[i][0]
+        x2,y2 = stream[i][2]
+        cv2.imwrite("crop.jpg",img[x1:x2,y1:y2,:])       
+        lower_green = np.array([0, 255, 0], dtype = "uint8") 
+        upper_green= np.array([0, 255, 0], dtype = "uint8")
+        mask = cv2.inRange(img[x1:x2,y1:y2:], lower_green, upper_green)
+        # res = cv2.bitwise_and(img,img, mask= mask)
+ 
+
+
+    return result
+A,B,C,D,E,F,G = sort_coordinates_with_letter(intersections)
+co = detect_signals(img,A)
+print(co)
+
+for i in range(len(A)):
+    # print(A[i])
+    x1,y1 = A[i][0]
+    x2,y2 = A[i][2]
+    print(x1,x2,y1,y2)
+    # cv2.imwrite("crop.jpg",img[x1:x2,y1:y2,:])
+    # x,y=a
+    # img = cv2.circle(img, (x,y), 3, (255,0,0), 3)
+    # i+=1
 
 cv2.imwrite('linesDetected.jpg', img)
