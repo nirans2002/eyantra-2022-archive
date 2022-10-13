@@ -66,7 +66,8 @@ def segmented_intersections(lines):
 
 img = cv2.imread('public_test_images/maze_2.png')
 
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+gray = img
 
 
 edges = cv2.Canny(gray, 50, 150, apertureSize=3)

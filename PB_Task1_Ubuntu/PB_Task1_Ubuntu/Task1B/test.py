@@ -81,12 +81,29 @@ def detect_ArUco_details(image):
         bottomRight = (int(bottomRight[0]),int(bottomRight[1]))
         bottomLeft = (int(bottomLeft[0]),int(bottomLeft[1]))
 
+        cornerCords = [topLeft,topRight,bottomLeft,bottomRight]
+
 
         center_x = int((topLeft[0]+ bottomRight[0])/2)
         center_y = int((topLeft[1]+ bottomRight[1])/2)
 
         centerCords = [center_x,center_y]
-        
+
+        # angle
+		
+        angle = (math.atan2(((topRight[0])-(topLeft[0])),((topRight[1]-topLeft[1]))))
+		# print((round(math.degrees(angle)))%360)
+        if angle<0:
+            angle = (round(math.degrees(angle)))+360
+        else:
+            angle = round(math.degrees(angle))
+
+
+
+        data = [centerCords,angle,cornerCords]
+
+        ArUco_details_dict[id] = data
+        ArUco_corners[id] = cornerCords       
 
     return ArUco_details_dict, ArUco_corners 
 
