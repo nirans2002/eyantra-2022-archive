@@ -27,9 +27,9 @@ def segment_by_angle_kmeans(lines, k=2, **kwargs):
 
 def colour(i):
 	if i==0:
-		return (0,0,255)
+		return (255,0,255)
 	elif i==1:
-		return (0,255,0)
+		return (255,0,255)
 
 def intersection(line1, line2):
 
@@ -56,7 +56,7 @@ def segmented_intersections(lines):
 
     return intersections
 
-img = cv2.imread('/home/navneeth/EgoPro/eyantra/gitrepo/eyantra-2022/PB_Task1_Ubuntu/PB_Task1_Ubuntu/Task1A/public_test_images/maze_1.png')
+img = cv2.imread('/home/navneeth/EgoPro/eyantra/gitrepo/eyantra-2022/PB_Task1_Ubuntu/PB_Task1_Ubuntu/Task1A/public_test_images/maze_9.png')
 
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -83,7 +83,7 @@ for i in range(len(seg)):
 		y1 = int(y0 + 1000*(a))
 		x2 = int(x0 - 1000*(-b))
 		y2 = int(y0 - 1000*(a))
-		cv2.line(img, (x1, y1), (x2, y2), colour(i), 2)
+		cv2.line(img, (x1, y1), (x2, y2), colour(i), 1)
 i=0
 intersections.sort
 def x_coordinate(ele):
@@ -276,33 +276,42 @@ def crop_image(img,y1,y2,x1,x2):
 def detect_signals(img,stream):
     result=[]
     color={'green':1,'blue':0,'red':0}
+    hsvFrame = cv2.cvtColor(img, cv2.COLOR_BGR2HSV) 
 
-    
+    y=0
     for i in range(len(stream)):
+        y+=1
+        print(y)
         max_count=0
+        print(len(stream[i]))
         x1,y1 = stream[i][0]
         x2,y2 = stream[i][2]
-        cv2.imwrite("crop.jpg",img[x1:x2,y1:y2,:])       
-        lower_green = np.array([0, 255, 0], dtype = "uint8") 
-        upper_green= np.array([0, 255, 0], dtype = "uint8")
-        mask = cv2.inRange(img[x1:x2,y1:y2:], lower_green, upper_green)
-        # res = cv2.bitwise_and(img,img, mask= mask)
+        print((x1,y1),(x2,y2))
+        cv2.imwrite(f"crop{y}.jpg",img[x1:x2,y1:y2,:])  
+
+        hsvFrame = cv2.cvtColor(img[x1:x2,y1:y2,:], cv2.COLOR_BGR2HSV)      
+        # green_lower = np.array([25, 52, 72], np.uint8) 
+        # green_upper = np.array([102, 255, 255], np.uint8) 
+        green_lower = np.array([35,43,46])
+        green_upper = np.array([77,255,255])
+        green_mask = cv2.inRange(hsvFrame, green_lower, green_upper)
+        if cv2.countNonZero(green_mask) > 0 :
+            result.append(i+1)
+
+        # cv2.imwrite('mask',green_mask)
+        result = cv2.bitwise_and(img[x1:x2,y1:y2,:], img[x1:x2,y1:y2,:], mask=green_mask)
+        cv2.imwrite("mask.jpg",result)
+        # print(green_mask)
+    return result
+
  
 
 
     return result
 A,B,C,D,E,F,G = sort_coordinates_with_letter(intersections)
-co = detect_signals(img,A)
-print(co)
+co = detect_signals(img,G)
+print(len(co))
 
-for i in range(len(A)):
-    # print(A[i])
-    x1,y1 = A[i][0]
-    x2,y2 = A[i][2]
-    print(x1,x2,y1,y2)
-    # cv2.imwrite("crop.jpg",img[x1:x2,y1:y2,:])
-    # x,y=a
-    # img = cv2.circle(img, (x,y), 3, (255,0,0), 3)
-    # i+=1
+
 
 cv2.imwrite('linesDetected.jpg', img)
